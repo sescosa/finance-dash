@@ -1,63 +1,54 @@
 import dash
-import dash_core_components as dcc
+from datetime import datetime
+import pandas as pd
+import requests
+
+import  dash_core_components as dcc
 import dash_html_components as html
-import plotly.graph_objs as go
+from dash.dependencies import Input, Output
+
+import pandas_datareader.data as web
+import secrets
 
 ########### Define your variables
-beers=['Chesapeake Stout', 'Snake Dog IPA', 'Imperial Porter', 'Double Dog IPA']
-ibu_values=[35, 60, 85, 75]
-abv_values=[5.4, 7.1, 9.2, 4.3]
-color1='lightblue'
-color2='darkgreen'
-mytitle='Beer Comparison'
-tabtitle='beer!'
-myheading='Flying Dog Beers'
-label1='IBU'
-label2='ABV'
-githublink='https://github.com/austinlasseter/flying-dog-beers'
-sourceurl='https://www.flyingdog.com/beers/'
-
-########### Set up the chart
-bitterness = go.Bar(
-    x=beers,
-    y=ibu_values,
-    name=label1,
-    marker={'color':color1}
-)
-alcohol = go.Bar(
-    x=beers,
-    y=abv_values,
-    name=label2,
-    marker={'color':color2}
-)
-
-beer_data = [bitterness, alcohol]
-beer_layout = go.Layout(
-    barmode='group',
-    title = mytitle
-)
-
-beer_fig = go.Figure(data=beer_data, layout=beer_layout)
+tabtitle='Bull Market'
 
 
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-server = app.server
-app.title=tabtitle
+my_app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+my_app.title=tabtitle
 
-########### Set up the layout
-app.layout = html.Div(children=[
-    html.H1(myheading),
-    dcc.Graph(
-        id='flyingdog',
-        figure=beer_fig
-    ),
-    html.A('Code on Github', href=githublink),
+######### Initial Layout
+my_app.layout = html.Div([
+    html.H1('Hello Bulls'),
+    html.Span('Stock Ticker:'),
     html.Br(),
-    html.A('Data Source', href=sourceurl),
-    ]
-)
+    dcc.Input(
+            value = 'TSLA',
+            id = 'my-input'
+        ),
+    dcc.Graph(id = 'my-graph')
+    ])
 
-if __name__ == '__main__':
-    app.run_server()
+###### Update chart dynamically
+@my_app.callback(
+    Output('my-graph','figure'),
+    [Input('my-input','value')]
+)
+def update_graph(stock_ticker):
+    fun = "TIME_SERIES_DAILY_ADJUSTED"
+    url  = "https://www.alphavantage.co/query?function=" + fun + "&symbol=" + stock_ticker + "&outputsize=full&apikey=" + secrets.api_key
+    df = pd.DataFrame.from_dict(requests.get(url).json().get('Time Series (Daily)',None),orient = 'index')
+    df.columns = df.columns.str.split(".").str[1].str.strip().str.lower().str.replace(' ', '_')
+    figure = {
+        'data': [
+            {
+                'x': df.index,
+                'y': df.close
+            }
+        ]
+    }
+    return figure
+
+my_app.server.run(debug = True)
