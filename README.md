@@ -17,18 +17,18 @@
 
 * Add stock selection
 * Add relevant financial fundamentals:
-...* P/E ratio (forward and trailing)
-...* Debt-to-equity
-...* Payout ratio (dividend stocks)
-...* Beta (how reactive relative to overall market)
-...* free cash flow
-...* ROE
-...* Price-to-book
+	* P/E ratio (forward and trailing)
+	* Debt-to-equity
+	* Payout ratio (dividend stocks)
+	* Beta (how reactive relative to overall market)
+	* free cash flow
+	* ROE
+	* Price-to-book
 
-Add advanced anlytics features: [source](https://github.com/firmai/financial-machine-learning)			
-...* Risk analysis
-...* Portfolio diversification
-...* Valuation modeling
+* Add advanced anlytics features: [source](https://github.com/firmai/financial-machine-learning)			
+	* Risk analysis
+	* Portfolio diversification
+	* Valuation modeling
 
 ### Develop front-end
 * Use dash library to develop python front-end: [Dash](https://dash.plotly.com/)
