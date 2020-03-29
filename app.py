@@ -2,6 +2,12 @@ import dash
 from datetime import datetime
 import pandas as pd
 import requests
+import os
+
+from dotenv import load_dotenv
+
+##### add env variables
+load_dotenv()
 
 import  dash_core_components as dcc
 import dash_html_components as html
@@ -39,7 +45,7 @@ my_app.layout = html.Div([
 )
 def update_graph(stock_ticker):
     fun = "TIME_SERIES_DAILY_ADJUSTED"
-    url  = "https://www.alphavantage.co/query?function=" + fun + "&symbol=" + stock_ticker + "&outputsize=full&apikey=" + secrets.api_key
+    url  = "https://www.alphavantage.co/query?function=" + fun + "&symbol=" + stock_ticker + "&outputsize=full&apikey=" + os.getenv('ALPHA_VANTAGE_KEY')
     df = pd.DataFrame.from_dict(requests.get(url).json().get('Time Series (Daily)',None),orient = 'index')
     df.columns = df.columns.str.split(".").str[1].str.strip().str.lower().str.replace(' ', '_')
     figure = {
