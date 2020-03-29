@@ -7,7 +7,11 @@ import os
 from dotenv import load_dotenv
 
 ##### add env variables
-load_dotenv()
+if os.path.isfile(".env"):
+    load_dotenv()
+    print("Loading environment variables...")
+else:
+    pass
 
 import  dash_core_components as dcc
 import dash_html_components as html
