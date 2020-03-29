@@ -6,19 +6,19 @@ import os
 
 from dotenv import load_dotenv
 
-##### add env variables
-if os.path.isfile(".env"):
-    load_dotenv()
-    print("Loading environment variables...")
-else:
-    pass
-
 import  dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
 import pandas_datareader.data as web
 import secrets
+
+##### add env variables
+if os.path.isfile(".env"):
+    load_dotenv()
+    print("Loading environment variables...")
+else:
+    pass
 
 ########### Define your variables
 tabtitle='Bull Market'
