@@ -17,6 +17,7 @@ tabtitle='Bull Market'
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 my_app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = my_app.server
 my_app.title=tabtitle
 
 ######### Initial Layout
@@ -51,4 +52,5 @@ def update_graph(stock_ticker):
     }
     return figure
 
-my_app.server.run(debug = True)
+if __name__ == '__main__':
+    my_app.run_server()
